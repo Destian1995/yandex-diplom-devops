@@ -4,5 +4,5 @@
 
 Образ был создан и запушен на DockerHub
 ```
-docker push destian1995/count_lines::1.0.0
+docker push destian1995/count_lines:1.0.0
 ```
