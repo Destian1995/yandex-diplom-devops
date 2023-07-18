@@ -8,5 +8,5 @@ COPY . /app
 WORKDIR /app
 
 # Выполняем команду для подсчета количества строк в текущей директории
-CMD ["python", "count_lines.py"]
+CMD ["python", "Data_counter.py"]
 
