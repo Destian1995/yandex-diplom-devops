@@ -8,6 +8,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копируем в контейнер
 COPY count_lines.py .
 
-# Команда при запуске контейнера
+# Команда при запуске контейнера.
 CMD ["python", "count_lines.py"]
 
