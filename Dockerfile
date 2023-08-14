@@ -1,13 +1,15 @@
-# Базовый образ Python
-FROM python:3.9-slim
+# Используем базовый образ Python
+FROM python:3
 
-# Зависимости
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Установка рабочей директории
+WORKDIR /app
 
-# Копируем в контейнер
+# Копирование файла count_lines.py в контейнер
 COPY count_lines.py .
 
-# Команда при запуске контейнера.
+# Установка зависимостей
+RUN pip install some-package
+
+# Запуск скрипта при запуске контейнера
 CMD ["python", "count_lines.py"]
 
