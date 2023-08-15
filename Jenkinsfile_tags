@@ -1,0 +1,40 @@
+#!groovy
+
+pipeline {
+  agent any
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+  }
+  stages {
+    stage('Get last tag') {
+      steps {
+        script {
+          last_tag = sh(returnStdout: true, script: 'git tag --list --sort=-version:refname \"0*\" | head -n 1').trim()
+          }
+          echo "last_tag=$last_tag"
+    }
+    }
+    stage('Docker Build') {
+      steps {
+         dir ('.') {
+        sh "docker build -t destian1995/nginx-app:$last_tag ."
+      }
+    }
+    }
+   stage('Dockerhub login') {
+      steps {
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+      }
+    }
+    stage('Docker push') {
+      steps {
+        sh "docker push destian1995/nginx-app:$last_tag"
+      }
+    }
+     stage('deploy app via helm') {
+      steps {
+        sh "helm upgrade netology ./helm/app --set app_deployment.image.tag=$last_tag -n myapp --kubeconfig ~/config"
+      }
+    }   
+  }
+}
